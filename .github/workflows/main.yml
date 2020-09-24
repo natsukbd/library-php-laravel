@@ -1,0 +1,19 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: install
+        run: make install
+      - name: phpstan
+        run: make phpstan
+      - name: phpcs
+        run: make phpcs
+      - name: test
+        run: make test

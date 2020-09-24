@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - .:/var/www/html
+    ports:
+      - 80:80
+    depends_on:
+      - php
+
+  php:
+    build: ./docker/php/
+    volumes:
+      - .:/var/www/html
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+
+  composer:
+    image: composer
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+
+volumes:
+  db:
+    driver: local
