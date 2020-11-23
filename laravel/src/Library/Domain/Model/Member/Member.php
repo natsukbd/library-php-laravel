@@ -31,4 +31,9 @@ final class Member
     {
         return $this->memberNumber;
     }
+
+    public function type(): MemberType
+    {
+        return $this->memberType;
+    }
 }
